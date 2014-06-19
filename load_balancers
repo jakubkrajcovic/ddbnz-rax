@@ -1,0 +1,40 @@
+{
+"args": {
+"loadBalancers": [
+{
+"port": 80,
+"loadBalancerId": 21827
+},
+{
+"port" : 80,
+"loadBalancerId": 21835
+},
+{
+"port": 80,
+"loadBalancerId": 21837
+}
+],
+"server": {
+"name": "node-autoscale",
+"imageRef": "eac6c796-a485-42f6-b6f2-69b67d043066",
+"flavorRef": "performance1-4",
+"OS-DCF:diskConfig": "AUTO",
+"config_drive" : "true",
+"key_name": "ddbnz",
+"metadata": {
+"build_config": "core",
+"meta_autoscale_group": "testscalinggroup",
+"meta_tag": "ASTEST"
+},
+"networks": [
+{
+"uuid": "11111111-1111-1111-1111-111111111111"
+},
+{
+"uuid": "00000000-0000-0000-0000-000000000000"
+}
+]
+}
+},
+"type": "launch_server"
+}

@@ -1,0 +1,36 @@
+#cloud-config
+users:
+  - default
+  - name: ubuntu
+    gecos: "Default ubuntu user"
+    primary-group: ubuntu
+    groups: users
+
+byobu_by_default: system
+disable_root: false
+
+# write out files:
+write_files:
+  - content: |
+      [credentials]
+      username=XXXX
+      api_key=XXXX
+      [api]
+      url=https://monitoring.api.rackspacecloud.com/v1.0
+      [auth_api]
+      url=https://identity.api.rackspacecloud.com/v2.0
+      [ssl]
+      verify=true
+    path: /root/.raxrc
+
+package_update: true
+packages:
+  - curl
+  - git
+  - python-setuptools
+  - python-pip
+  - g++ 
+  - libssl-dev 
+  - apache2-utils
+  - nginx
+  - node

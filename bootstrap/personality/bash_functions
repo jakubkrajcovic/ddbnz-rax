@@ -1,0 +1,5 @@
+function loadoscred {
+    if [ -f ~/.openrc/${1} ] ; then
+        source ~/.openrc/${1}
+    fi
+}

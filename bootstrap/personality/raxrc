@@ -1,0 +1,9 @@
+[credentials]
+username=XXXX
+api_key=XXXX
+[api]
+url=https://monitoring.api.rackspacecloud.com/v1.0
+[auth_api]
+url=https://identity.api.rackspacecloud.com/v2.0/tokens
+[ssl]
+verify=true

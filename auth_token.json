@@ -1,0 +1,5 @@
+{ "auth":
+  { "RAX-KSKEY:apiKeyCredentials":
+      { "username": "XXXX", "apiKey":"XXXX" }
+  }
+}

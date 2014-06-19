@@ -1,0 +1,69 @@
+Content-Type: multipart/mixed; boundary="===============5823355777386479319=="
+MIME-Version: 1.0
+
+--===============5823355777386479319==
+Content-Type: text/cloud-config; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="cloudconfig.yaml"
+
+#cloud-config
+users:
+  - default
+  - name: ubuntu
+    gecos: "Default ubuntu user"
+    primary-group: ubuntu
+    groups: users
+
+byobu_by_default: system
+disable_root: false
+
+# write out files:
+write_files:
+  - content: |
+      [credentials]
+      username=warehousegive
+      api_key=522e2ad15bc55e03b92b7380aee26742
+      [api]
+      url=https://monitoring.api.rackspacecloud.com/v1.0
+      [auth_api]
+      url=https://identity.api.rackspacecloud.com/v2.0
+      [ssl]
+      verify=true
+    path: /root/.raxrc
+
+package_update: true
+packages:
+  - curl
+  - git
+  - python-setuptools
+  - python-pip
+
+--===============5823355777386479319==
+Content-Type: text/x-shellscript; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="userscript.sh"
+
+#!/bin/sh
+
+# setup and start the rackspace monitoring agent
+API_KEY=522e2ad15bc55e03b92b7380aee26742
+USERNAME=warehousegive
+
+rackspace-monitoring-agent --setup --username ${USERNAME} --apikey ${API_KEY}
+service rackspace-monitoring-agent start
+chkconfig rackspace-monitoring-agent on
+
+# install rackspace nova client
+pip install rackspace-novaclient
+# install the raxmon cli
+pip install rackspace-monitoring-cli
+
+# configure some basic checks for the cloud monitoring
+ENTITY=$(raxmon-entities-list | grep label=$(hostname) | awk -F "=" '{print($2); }' | awk '{print($1); }')
+raxmon-checks-create --entity-id=${ENTITY} --label=load --type agent.load_average --details "Load average"
+
+# the last thing to do is create alarms, but this is WAAAY too complicated to be honest, so we may need to do this with the GUI
+
+--===============5823355777386479319==--
